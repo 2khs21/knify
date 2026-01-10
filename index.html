@@ -3,22 +3,685 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Knify</title>
+		<title>knify — AI-Powered React Builder</title>
+		<link rel="icon" type="image/png" href="assets/logo-dark.png" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 		<style>
-			body {
+			:root {
+				--bg-primary: #050508;
+				--bg-secondary: #0a0a0f;
+				--bg-tertiary: #12121a;
+				--text-primary: #ffffff;
+				--text-secondary: #94a3b8;
+				--text-muted: #64748b;
+				--accent: #3b82f6;
+				--accent-hover: #60a5fa;
+				--accent-light: #93c5fd;
+				--border: #1e293b;
+			}
+
+			* {
 				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			html {
+				scroll-behavior: smooth;
+			}
+
+			body {
+				font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+				background: var(--bg-primary);
+				color: var(--text-primary);
+				line-height: 1.6;
+				min-height: 100vh;
+			}
+
+			/* Gradient background effect */
+			.bg-gradient {
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: radial-gradient(
+						ellipse 80% 50% at 50% -20%,
+						rgba(59, 130, 246, 0.12),
+						transparent
+					),
+					radial-gradient(
+						ellipse 60% 40% at 80% 60%,
+						rgba(59, 130, 246, 0.06),
+						transparent
+					);
+				pointer-events: none;
+				z-index: -1;
+			}
+
+			.container {
+				max-width: 1100px;
+				margin: 0 auto;
+				padding: 0 24px;
+			}
+
+			/* Header */
+			header {
+				padding: 24px 0;
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				z-index: 100;
+				background: rgba(10, 10, 11, 0.8);
+				backdrop-filter: blur(12px);
+				border-bottom: 1px solid var(--border);
+			}
+
+			.header-content {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
+
+			.logo {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+
+			.logo img {
+				height: 32px;
+				width: auto;
+			}
+
+			.logo-text {
+				font-size: 1.25rem;
+				font-weight: 600;
+				letter-spacing: -0.02em;
+			}
+
+			.nav-link {
+				color: var(--text-secondary);
+				text-decoration: none;
+				font-size: 0.9rem;
+				font-weight: 500;
+				padding: 8px 16px;
+				border-radius: 8px;
+				transition: all 0.2s ease;
+			}
+
+			.nav-link:hover {
+				color: var(--text-primary);
+				background: var(--bg-tertiary);
+			}
+
+			/* Hero Section */
+			.hero {
 				min-height: 100vh;
 				display: flex;
-				justify-content: center;
 				align-items: center;
-				background: #000000;
+				justify-content: center;
+				text-align: center;
+				padding-top: 80px;
 			}
-			img {
-				max-width: 300px;
+
+			.hero-content {
+				max-width: 720px;
+			}
+
+			.hero-logo {
+				width: 120px;
+				height: auto;
+				margin-bottom: 40px;
+				opacity: 0.9;
+			}
+
+			.hero-badge {
+				display: inline-flex;
+				align-items: center;
+				gap: 8px;
+				padding: 6px 14px;
+				background: var(--bg-tertiary);
+				border: 1px solid var(--border);
+				border-radius: 100px;
+				font-size: 0.8rem;
+				color: var(--text-secondary);
+				margin-bottom: 24px;
+			}
+
+			.hero-badge-dot {
+				width: 6px;
+				height: 6px;
+				background: var(--accent);
+				border-radius: 50%;
+				animation: pulse 2s infinite;
+			}
+
+			@keyframes pulse {
+				0%,
+				100% {
+					opacity: 1;
+				}
+				50% {
+					opacity: 0.5;
+				}
+			}
+
+			.hero h1 {
+				font-size: clamp(2.5rem, 6vw, 4rem);
+				font-weight: 700;
+				letter-spacing: -0.03em;
+				line-height: 1.1;
+				margin-bottom: 24px;
+			}
+
+			.hero h1 span {
+				background: linear-gradient(135deg, var(--accent), var(--accent-light));
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-clip: text;
+			}
+
+			.hero-description {
+				font-size: 1.2rem;
+				color: var(--text-secondary);
+				max-width: 540px;
+				margin: 0 auto 40px;
+				line-height: 1.7;
+			}
+
+			.hero-cta {
+				display: flex;
+				gap: 16px;
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+
+			.btn {
+				display: inline-flex;
+				align-items: center;
+				gap: 8px;
+				padding: 14px 28px;
+				border-radius: 12px;
+				font-size: 1rem;
+				font-weight: 500;
+				text-decoration: none;
+				transition: all 0.2s ease;
+				cursor: pointer;
+				border: none;
+			}
+
+			.btn-primary {
+				background: var(--accent);
+				color: var(--bg-primary);
+			}
+
+			.btn-primary:hover {
+				background: var(--accent-hover);
+				transform: translateY(-2px);
+			}
+
+			.btn-secondary {
+				background: transparent;
+				color: var(--text-primary);
+				border: 1px solid var(--border);
+			}
+
+			.btn-secondary:hover {
+				background: var(--bg-tertiary);
+				border-color: var(--text-muted);
+			}
+
+			/* Features Section */
+			.features {
+				padding: 120px 0;
+			}
+
+			.section-header {
+				text-align: center;
+				margin-bottom: 64px;
+			}
+
+			.section-label {
+				font-size: 0.85rem;
+				color: var(--accent);
+				font-weight: 500;
+				letter-spacing: 0.05em;
+				text-transform: uppercase;
+				margin-bottom: 16px;
+			}
+
+			.section-title {
+				font-size: clamp(1.75rem, 4vw, 2.5rem);
+				font-weight: 700;
+				letter-spacing: -0.02em;
+			}
+
+			.features-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				gap: 24px;
+			}
+
+			.feature-card {
+				background: var(--bg-secondary);
+				border: 1px solid var(--border);
+				border-radius: 16px;
+				padding: 32px;
+				transition: all 0.3s ease;
+			}
+
+			.feature-card:hover {
+				border-color: var(--text-muted);
+				transform: translateY(-4px);
+			}
+
+			.feature-icon {
+				width: 48px;
+				height: 48px;
+				background: linear-gradient(135deg, var(--accent), var(--accent-light));
+				border-radius: 12px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-bottom: 20px;
+				font-size: 1.5rem;
+			}
+
+			.feature-card h3 {
+				font-size: 1.2rem;
+				font-weight: 600;
+				margin-bottom: 12px;
+				letter-spacing: -0.01em;
+			}
+
+			.feature-card p {
+				color: var(--text-secondary);
+				font-size: 0.95rem;
+				line-height: 1.6;
+			}
+
+			/* How it Works */
+			.how-it-works {
+				padding: 80px 0 120px;
+			}
+
+			.workflow {
+				display: flex;
+				flex-direction: column;
+				gap: 0;
+				max-width: 600px;
+				margin: 0 auto;
+			}
+
+			.workflow-step {
+				display: flex;
+				gap: 24px;
+				position: relative;
+			}
+
+			.workflow-line {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+			}
+
+			.workflow-number {
+				width: 40px;
+				height: 40px;
+				background: var(--bg-tertiary);
+				border: 2px solid var(--accent);
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-weight: 600;
+				font-size: 0.9rem;
+				color: var(--accent);
+				flex-shrink: 0;
+			}
+
+			.workflow-connector {
+				width: 2px;
+				flex: 1;
+				background: linear-gradient(to bottom, var(--accent), var(--border));
+				min-height: 40px;
+			}
+
+			.workflow-step:last-child .workflow-connector {
+				display: none;
+			}
+
+			.workflow-content {
+				padding-bottom: 40px;
+			}
+
+			.workflow-content h4 {
+				font-size: 1.1rem;
+				font-weight: 600;
+				margin-bottom: 8px;
+			}
+
+			.workflow-content p {
+				color: var(--text-secondary);
+				font-size: 0.9rem;
+			}
+
+			/* CTA Section */
+			.cta-section {
+				padding: 80px 0 120px;
+			}
+
+			.cta-box {
+				background: linear-gradient(
+					135deg,
+					var(--bg-secondary),
+					var(--bg-tertiary)
+				);
+				border: 1px solid var(--border);
+				border-radius: 24px;
+				padding: 64px 40px;
+				text-align: center;
+			}
+
+			.cta-box h2 {
+				font-size: clamp(1.5rem, 4vw, 2rem);
+				font-weight: 700;
+				margin-bottom: 16px;
+				letter-spacing: -0.02em;
+			}
+
+			.cta-box p {
+				color: var(--text-secondary);
+				margin-bottom: 32px;
+				font-size: 1.05rem;
+			}
+
+			.email-form {
+				display: flex;
+				gap: 12px;
+				max-width: 420px;
+				margin: 0 auto;
+				flex-wrap: wrap;
+				justify-content: center;
+			}
+
+			.email-input {
+				flex: 1;
+				min-width: 240px;
+				padding: 14px 20px;
+				background: var(--bg-primary);
+				border: 1px solid var(--border);
+				border-radius: 12px;
+				color: var(--text-primary);
+				font-size: 1rem;
+				font-family: inherit;
+				outline: none;
+				transition: border-color 0.2s ease;
+			}
+
+			.email-input:focus {
+				border-color: var(--accent);
+			}
+
+			.email-input::placeholder {
+				color: var(--text-muted);
+			}
+
+			/* Footer */
+			footer {
+				padding: 40px 0;
+				border-top: 1px solid var(--border);
+			}
+
+			.footer-content {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				flex-wrap: wrap;
+				gap: 16px;
+			}
+
+			.footer-left {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+
+			.footer-left img {
+				height: 24px;
+				opacity: 0.7;
+			}
+
+			.footer-text {
+				color: var(--text-muted);
+				font-size: 0.85rem;
+			}
+
+			.footer-links {
+				display: flex;
+				gap: 24px;
+			}
+
+			.footer-links a {
+				color: var(--text-muted);
+				text-decoration: none;
+				font-size: 0.85rem;
+				transition: color 0.2s ease;
+			}
+
+			.footer-links a:hover {
+				color: var(--text-primary);
+			}
+
+			/* Responsive */
+			@media (max-width: 640px) {
+				.hero-logo {
+					width: 80px;
+				}
+
+				.header-content {
+					justify-content: center;
+				}
+
+				.nav-link {
+					display: none;
+				}
+
+				.hero-cta {
+					flex-direction: column;
+					align-items: center;
+				}
+
+				.btn {
+					width: 100%;
+					max-width: 280px;
+					justify-content: center;
+				}
+
+				.footer-content {
+					flex-direction: column;
+					text-align: center;
+				}
 			}
 		</style>
 	</head>
 	<body>
-		<img src="asset/logo.png" alt="Knify Logo" />
+		<div class="bg-gradient"></div>
+
+		<!-- Header -->
+		<header>
+			<div class="container header-content">
+				<div class="logo">
+					<img src="assets/logo.png" alt="knify Logo" />
+					<span class="logo-text">knify</span>
+				</div>
+				<a href="#features" class="nav-link">Features</a>
+			</div>
+		</header>
+
+		<!-- Hero Section -->
+		<section class="hero">
+			<div class="container hero-content">
+				<img src="assets/logo.png" alt="knify" class="hero-logo" />
+				<div class="hero-badge">
+					<span class="hero-badge-dot"></span>
+					Coming Soon
+				</div>
+				<h1>Build React UI <span>10x Faster</span> with AI</h1>
+				<p class="hero-description">
+					레이아웃 중심 IR로 LLM 토큰을 효율화하는 차세대 React 컴포넌트 빌더.
+					드래그앤드롭으로 설계하고, AI가 코드를 완성합니다.
+				</p>
+				<div class="hero-cta">
+					<a href="#notify" class="btn btn-primary">
+						<svg
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<path
+								d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+							/>
+							<polyline points="22,6 12,13 2,6" />
+						</svg>
+						출시 알림 받기
+					</a>
+					<a href="#features" class="btn btn-secondary"> 자세히 보기 </a>
+				</div>
+			</div>
+		</section>
+
+		<!-- Features Section -->
+		<section class="features" id="features">
+			<div class="container">
+				<div class="section-header">
+					<p class="section-label">Features</p>
+					<h2 class="section-title">왜 knify인가요?</h2>
+				</div>
+				<div class="features-grid">
+					<div class="feature-card">
+						<div class="feature-icon">⚡</div>
+						<h3>토큰 효율화</h3>
+						<p>
+							실제 코드 대신 레이아웃 메타 정보만 LLM에 전달하여 비용을
+							획기적으로 절감합니다.
+						</p>
+					</div>
+					<div class="feature-card">
+						<div class="feature-icon">🎨</div>
+						<h3>비주얼 에디터</h3>
+						<p>
+							드래그앤드롭으로 직관적인 UI 설계. 코드를 몰라도 복잡한 레이아웃을
+							구성할 수 있습니다.
+						</p>
+					</div>
+					<div class="feature-card">
+						<div class="feature-icon">🔄</div>
+						<h3>실시간 코드 생성</h3>
+						<p>
+							IR에서 React + Tailwind CSS 코드를 자동 생성하고, 실시간으로
+							프리뷰합니다.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- How it Works -->
+		<section class="how-it-works">
+			<div class="container">
+				<div class="section-header">
+					<p class="section-label">How it works</p>
+					<h2 class="section-title">간단한 3단계</h2>
+				</div>
+				<div class="workflow">
+					<div class="workflow-step">
+						<div class="workflow-line">
+							<div class="workflow-number">1</div>
+							<div class="workflow-connector"></div>
+						</div>
+						<div class="workflow-content">
+							<h4>컴포넌트 배치</h4>
+							<p>팔레트에서 원하는 컴포넌트를 캔버스에 드래그앤드롭하세요.</p>
+						</div>
+					</div>
+					<div class="workflow-step">
+						<div class="workflow-line">
+							<div class="workflow-number">2</div>
+							<div class="workflow-connector"></div>
+						</div>
+						<div class="workflow-content">
+							<h4>AI로 완성</h4>
+							<p>
+								레이아웃 구조를 바탕으로 AI가 세부 디자인과 로직을 제안합니다.
+							</p>
+						</div>
+					</div>
+					<div class="workflow-step">
+						<div class="workflow-line">
+							<div class="workflow-number">3</div>
+							<div class="workflow-connector"></div>
+						</div>
+						<div class="workflow-content">
+							<h4>코드 내보내기</h4>
+							<p>완성된 React 코드를 복사하거나 프로젝트에 바로 적용하세요.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- CTA Section -->
+		<section class="cta-section" id="notify">
+			<div class="container">
+				<div class="cta-box">
+					<h2>출시 소식을 가장 먼저 받아보세요</h2>
+					<p>초기 사용자에게 특별한 혜택을 드립니다.</p>
+					<form class="email-form" onsubmit="handleSubmit(event)">
+						<input
+							type="email"
+							class="email-input"
+							placeholder="이메일 주소"
+							required
+						/>
+						<button type="submit" class="btn btn-primary">알림 신청</button>
+					</form>
+				</div>
+			</div>
+		</section>
+
+		<!-- Footer -->
+		<footer>
+			<div class="container footer-content">
+				<div class="footer-left">
+					<img src="assets/logo.png" alt="knify" />
+					<span class="footer-text">© 2026 knify. All rights reserved.</span>
+				</div>
+				<div class="footer-links">
+					<a href="#">Twitter</a>
+					<a href="#">GitHub</a>
+					<a href="#">Contact</a>
+				</div>
+			</div>
+		</footer>
+
+		<script>
+			function handleSubmit(event) {
+				event.preventDefault();
+				const email = event.target.querySelector('input').value;
+				alert('감사합니다! ' + email + '로 출시 소식을 보내드리겠습니다.');
+				event.target.reset();
+			}
+		</script>
 	</body>
 </html>
